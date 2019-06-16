@@ -1,8 +1,8 @@
 exports.cards = [
   {
     name: 'Monopoly',
-    description: 'A game about becoming a tyrannical landlord.',
-    factoid: 'Originally called "The Landlord\'s game".'
+    description: 'A fast-trading, property dealing board game.',
+    factoid: 'Originally called "The Landlord\'s Game".'
   },
   {
     name: 'Pandemic',
