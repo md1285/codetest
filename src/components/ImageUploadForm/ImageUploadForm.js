@@ -4,6 +4,7 @@ import axios from 'axios';
 class ImageUploadForm extends React.Component {
   state = {
     file: null,
+    title: null,
     images: []
   };
 
@@ -11,7 +12,7 @@ class ImageUploadForm extends React.Component {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', this.state.file[0]);
-    axios.post('/image-upload', formData, {
+    axios.post('/image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -23,12 +24,16 @@ class ImageUploadForm extends React.Component {
         })
       })
       .then(err => {
-        console.log(err);
+        if (err) console.log(err);
       });
   }
 
   handleFileUpload = e => {
     this.setState({ file: e.target.files });
+  }
+
+  handleChange = e => {
+    this.setState({[e.target.name]: e.target.value})
   }
 
   render() {
@@ -38,10 +43,15 @@ class ImageUploadForm extends React.Component {
           onSubmit={this.submitFile}
         >
           <input
-            label='upload image'
             type='file'
             onChange={this.handleFileUpload}
           />
+          <input 
+            name='title'
+            type='text'
+            onChange={this.handleChange}
+          />
+
           <button
             type='submit'
           >Submit</button>
@@ -50,7 +60,8 @@ class ImageUploadForm extends React.Component {
         this.state.images.map(image => (
           <img 
             src={image}
-            alt='an uploaded image'
+            alt='user uploaded file'
+            key={image}
           />
         ))
         }

@@ -43,29 +43,28 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise();
 };
 
-// Image Upload route
-app.post('/image-upload', (request, response) => {
-  const form = new multiparty.Form();
-  form.parse(
-    request,
-    async (error, fields, files) => {
-      if (error) throw new Error(error);
-      try {
-        const path = files.file[0].path;
-        const buffer = fs.readFileSync(path);
-        const type = fileType(buffer);
-        const timestamp = Date.now().toString();
-        const filename = `bucketfolder/${timestamp}-lg`;
-        const data = await uploadFile(buffer, filename, type);
-        return response.status(200).send(data);
-      } catch (error) {
-        return response.status(400).send(error);
-      }
-    }
-  );
-});
 
 // API routes
+  app.post('/image', (request, response) => {
+    const form = new multiparty.Form();
+    form.parse(
+      request,
+      async (error, fields, files) => {
+        if (error) throw new Error(error);
+        try {
+          const path = files.file[0].path;
+          const buffer = fs.readFileSync(path);
+          const type = fileType(buffer);
+          const timestamp = Date.now().toString();
+          const filename = `images/${timestamp}`;
+          const data = await uploadFile(buffer, filename, type);
+          return response.status(200).send(data);
+        } catch (error) {
+          return response.status(400).send(error);
+        }
+      }
+    );
+  });
 
 // Catch-all API route
 app.get('/*', function (req, res) {
