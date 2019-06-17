@@ -4,23 +4,29 @@ import axios from 'axios';
 class ImageUploadForm extends React.Component {
   state = {
     file: null,
-    title: null,
-    images: []
+    name: '',
+    image: '',
+    description: '',
+    factoid: '',
+    cards: []
   };
 
-  submitFile = e => {
+  submitCard = e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', this.state.file[0]);
-    axios.post('/image', formData, {
+    if (this.state.file) formData.append('file', this.state.file[0]);
+    if (this.state.name) formData.append('name', this.state.name);
+    if (this.state.description) formData.append('description', this.state.description);
+    if (this.state.factoid) formData.append('factoid', this.state.factoid);
+    axios.post('/cards', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
     })
       .then(res => {
-        console.log(res.data.Location);
+        console.log(res.data);
         this.setState({
-          images: [...this.state.images, res.data.Location]
+          cards: [...this.state.cards, res.data]
         })
       })
       .then(err => {
@@ -40,14 +46,27 @@ class ImageUploadForm extends React.Component {
     return (
       <div>
         <form
-          onSubmit={this.submitFile}
+          onSubmit={this.submitCard}
         >
           <input
             type='file'
             onChange={this.handleFileUpload}
           />
           <input 
-            name='title'
+            placeholder='name'
+            name='name'
+            type='text'
+            onChange={this.handleChange}
+          />
+          <input 
+            placeholder='description'
+            name='description'
+            type='text'
+            onChange={this.handleChange}
+          />
+          <input 
+            placeholder='factoid'
+            name='factoid'
             type='text'
             onChange={this.handleChange}
           />
@@ -56,12 +75,12 @@ class ImageUploadForm extends React.Component {
             type='submit'
           >Submit</button>
         </form>
-        {this.state.images.length > 0 &&
-        this.state.images.map(image => (
+        {this.state.cards.length > 0 &&
+        this.state.cards.map(card => (
           <img 
-            src={image}
-            alt='user uploaded file'
-            key={image}
+            src={card.image}
+            alt={card.name}
+            key={card.name}
           />
         ))
         }
