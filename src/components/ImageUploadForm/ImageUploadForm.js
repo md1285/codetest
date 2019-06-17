@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import cardService from '../../utils/cardService';
 
 class ImageUploadForm extends React.Component {
   state = {
@@ -11,27 +11,35 @@ class ImageUploadForm extends React.Component {
     cards: []
   };
 
-  submitCard = e => {
+  submitCard = async e => {
     e.preventDefault();
-    const formData = new FormData();
-    if (this.state.file) formData.append('file', this.state.file[0]);
-    if (this.state.name) formData.append('name', this.state.name);
-    if (this.state.description) formData.append('description', this.state.description);
-    if (this.state.factoid) formData.append('factoid', this.state.factoid);
-    axios.post('/cards', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-    })
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          cards: [...this.state.cards, res.data]
-        })
-      })
-      .then(err => {
-        if (err) console.log(err);
-      });
+
+    const newCard = await cardService.submitNewCard(this.state);
+    this.setState({
+      cards: [...this.state.cards, newCard]
+    });
+
+    // const formData = new FormData();
+    // if (this.state.file) formData.append('file', this.state.file[0]);
+    // if (this.state.name) formData.append('name', this.state.name);
+    // if (this.state.description) formData.append('description', this.state.description);
+    // if (this.state.factoid) formData.append('factoid', this.state.factoid);
+
+    // axios.post('/cards', formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data'
+    //   },
+    // })
+    //   .then(res => {
+    //     console.log(res.data);
+    //     this.setState({
+    //       cards: [...this.state.cards, res.data]
+    //     })
+    //   })
+    //   .then(err => {
+    //     if (err) console.log(err);
+    //   });
+
   }
 
   handleFileUpload = e => {
