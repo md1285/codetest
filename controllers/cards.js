@@ -6,7 +6,11 @@ const multiparty = require('multiparty');
 const bluebird = require('bluebird');
 
 
-const index = () => { };
+const index = async (req, res) => {
+  const allCards = await Card.find({});
+  console.log(allCards);
+  res.status(200).json(allCards);
+};
 
 // helper function and setup for newCard
 AWS.config.update({
@@ -46,9 +50,9 @@ const newCard = (req, res) => {
           factoid: fields.factoid[0],
           image: uploadData.Location,
         };
-        return res.status(200).send(newCard);
+        res.status(200).json(newCard);
       } catch (error) {
-        return res.status(400).send(error);
+        res.status(400).json(error);
       }
     }
   );

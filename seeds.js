@@ -10,6 +10,7 @@ const seedData = [];
 (async () => {
   const apiResult = await axios.get('https://www.boardgamegeek.com/xmlapi2/hot?type=boardgame');
   parseString(apiResult.data, (err, result) => {
+    result.items.item.length = 15;
     result.items.item.forEach(item => {
       seedData.push({
         name: item.name[0]['$'].value,
@@ -18,6 +19,7 @@ const seedData = [];
         factoid: `Currently ranked number ${item['$'].rank} on Board Game Geek's list of hottest board games.`,
       });
     });
+
   });
 })();
 

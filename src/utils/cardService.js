@@ -13,10 +13,23 @@ const submitNewCard = state => {
   })
     .then(res => {
       if (res.statusText === 'OK') return res.data;
-      throw new Error('There was an error submitting the card.')
+    })
+    .catch(err => {
+      console.log(`There was an error submitting the card: ${err}`)
     });
+};
+
+const getAllCards = () => {
+  return axios.get('/cards')
+  .then(res => {
+    return res.data;
+  })
+  .catch(err => {
+    console.log(`There was an error getting the cards: ${err}`)
+  });
 };
 
 export default {
   submitNewCard,
+  getAllCards,
 };
