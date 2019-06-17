@@ -7,8 +7,7 @@ const bluebird = require('bluebird');
 
 
 const index = async (req, res) => {
-  const allCards = await Card.find({});
-  console.log(allCards);
+  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]);
   res.status(200).json(allCards);
 };
 
