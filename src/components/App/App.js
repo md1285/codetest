@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 
-import ImageUploadForm from '../ImageUploadForm/ImageUploadForm';
+import CardUploadForm from '../CardUploadForm/CardUploadForm';
 
 function App() {
   return (
     <div className="App">
-      <ImageUploadForm />
+      <CardUploadForm />
     </div>
   );
 }
