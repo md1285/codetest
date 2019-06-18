@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import styles from './App.module.css'
 
 import Navbar from '../Navbar/Navbar'
 import Cards from '../Cards/Cards';
@@ -59,32 +59,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className={styles.App}>
         <Navbar />
         <Switch>
           <Route
             exact path='/'
             render={() => (
-              <Redirect to='/cards' />
+              <Redirect to='/cards'/>
             )}
           />
           <Route
             exact path='/cards/new'
             render={props => (
-              <div>
                 <CardUploadForm
                   history={props.history}
                   handleSubmitNewCard={this.handleSubmitNewCard}
+                  errorMessage={this.state.message}
                 />
-                {this.state.message &&
-                  <p>{this.state.message}</p>
-                }
-              </div>
             )}
           />
           <Route
             exact path='/cards'
-            render={() => (
+            render={props => (
               <Cards
                 cards={this.state.cards}
                 counter={this.state.counter}

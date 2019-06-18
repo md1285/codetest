@@ -1,0 +1,19 @@
+.CardUploadForm {
+  background-color: purple;
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* margin: 50px; */
+}
+
+.btnResize {
+  height: 45px;
+}
+
+.form {
+  margin: 15px;
+}

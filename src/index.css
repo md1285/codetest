@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.largeScreenResize {
+  width: 100%;
+}
+
+.resizeInner {
+  width: 100%;
+}
+
+
+@media only screen and (min-width: 700px) {
+  .largeScreenResize {
+    width: 65%;
+  }
+}

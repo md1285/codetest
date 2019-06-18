@@ -1,22 +1,42 @@
 import React from 'react';
+import styles from './Card.module.css'
+
+import { Modal, Button } from 'react-materialize';
+
+const trigger = <Button
+  className='red'
+>Delete</Button>;
 
 class Card extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={`${styles.Card} resizeInner`}>
         <p>{this.props.currentNum}/{this.props.totalCards}</p>
-        <p>Name: {this.props.name}</p>
-        <img src={this.props.image} alt={this.props.name}/>
-        <p>Description: {this.props.description}</p>
-        <p>Factoid: {this.props.factoid}</p>
-        <button
-          onClick={() => this.props.handleDelete(this.props.id)}
-        >Delete</button>
+        <p>{this.props.name}</p>
+        <img src={this.props.image} alt={this.props.name} />
+        <div>
+          <p className={styles.p}>Description: {this.props.description}</p>
+          <p className={styles.p}>Factoid: {this.props.factoid}</p>
+        </div>
+
+        <Modal trigger={trigger}>
+          <p>
+            Are you sure? This cannot be undone.
+          </p>
+          <Button
+            onClick={() => {
+              this.props.handleDelete(this.props.id)
+            }}
+            modal='close'
+            className='red'
+          >Yes, Delete</Button>
+        </Modal>
+
       </div>
     );
   }
-  
+
 }
 
 export default Card;

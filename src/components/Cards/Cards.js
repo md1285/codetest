@@ -1,11 +1,12 @@
 import React from 'react';
 import Card from '../Card/Card';
+import styles from './Cards.module.css'
 
 class Cards extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={`${styles.Cards} largeScreenResize`}>
         {this.props.cards[0]
           ?
           <Card
@@ -23,14 +24,18 @@ class Cards extends React.Component {
           :
           <p>Loading...</p>
         }
-        <button
-          onClick={() => {
-            this.props.handleClick(-1)
-          }}
-        >&lt;--</button>
-        <button
-          onClick={() => this.props.handleClick(1)}
-        >--></button>
+        <div className={styles.cardNavButtonsWrapper}>
+          <button
+            className='btn'
+            onClick={() => {
+              this.props.handleClick(-1)
+            }}
+          >&lt;--</button>
+          <button
+            className='btn'
+            onClick={() => this.props.handleClick(1)}
+          >--></button>
+        </div>
       </div>
     );
   }
