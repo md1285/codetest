@@ -7,17 +7,22 @@ const bluebird = require('bluebird');
 
 const index = async (req, res) => {
   const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
-  console.log(allCards)
   res.status(200).json(allCards);
 };
 
-// helper function and setup for newCard
+const deleteCard = async (req, res) => {
+  await Card.findByIdAndDelete(req.params.id);
+  index(req, res);
+};
+
+// helper function and setup for getImageUrl
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 AWS.config.setPromisesDependency(bluebird);
 const s3 = new AWS.S3();
+
 const uploadFile = (buffer, name, type) => {
   const params = {
     ACL: 'public-read',
@@ -29,27 +34,33 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise();
 };
 
+// getImageUrl helper function for newCard
+const getImageUrl = async files => {
+  const path = files.file[0].path;
+  const buffer = fs.readFileSync(path);
+  const type = fileType(buffer);
+  const timestamp = Date.now().toString();
+  const filename = `images/${timestamp}`;
+  const uploadData = await uploadFile(buffer, filename, type);
+  return uploadData.Location;
+};
+
 const newCard = (req, res) => {
   const form = new multiparty.Form();
-  form.parse(
-    req,
-    async (error, fields, files) => {
+  form.parse(req, async (error, fields, files) => {
       if (error) throw new Error(error);
       try {
-        const path = files.file[0].path;
-        const buffer = fs.readFileSync(path);
-        const type = fileType(buffer);
-        const timestamp = Date.now().toString();
-        const filename = `images/${timestamp}`;
-        const uploadData = await uploadFile(buffer, filename, type);
+        const image = await getImageUrl(files);
         const newCard = {
           name: fields.name[0],
           description: fields.description[0],
           factoid: fields.factoid[0],
-          image: uploadData.Location,
+          image
         };
-        await Card.create(newCard);
-        // res.status(200).json(newCard);
+        const cardExists = await Card.exists({name: newCard.name})
+        if (!cardExists) {
+          await Card.create(newCard);
+        }
         index(req, res);
       } catch (error) {
         res.status(400).json(error);
@@ -58,13 +69,9 @@ const newCard = (req, res) => {
   );
 };
 
-const deleteCard = async (req, res) => {
-  await Card.findByIdAndDelete(req.params.id);
-  index(req, res);
-};
 
 module.exports = {
-  new: newCard,
   index,
-  delete: deleteCard
+  delete: deleteCard,
+  new: newCard
 };
