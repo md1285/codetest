@@ -5,12 +5,6 @@ const fileType = require('file-type');
 const multiparty = require('multiparty');
 const bluebird = require('bluebird');
 
-
-const index = async (req, res) => {
-  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]);
-  res.status(200).json(allCards);
-};
-
 // helper function and setup for newCard
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -57,7 +51,18 @@ const newCard = (req, res) => {
   );
 };
 
+const index = async (req, res) => {
+  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]);
+  res.status(200).json(allCards);
+};
+
+const deleteCard = async (req, res) => {
+  await Card.findByIdAndDelete(req.params.id);
+  index(req, res);
+};
+
 module.exports = {
   new: newCard,
   index,
+  delete: deleteCard
 };

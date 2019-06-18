@@ -29,7 +29,18 @@ const getAllCards = () => {
   });
 };
 
+const deleteCard = id => {
+  return axios.delete(`/cards/${id}`)
+  .then(res => {
+    return res.data;
+  })
+  .catch(err => {
+    console.log(`There was an error deleting the card: ${err}`)
+  })
+}
+
 export default {
   submitNewCard,
   getAllCards,
+  deleteCard
 };

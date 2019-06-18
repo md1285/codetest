@@ -10,6 +10,9 @@ class Card extends React.Component {
         <img src={this.props.image} alt={this.props.name}/>
         <p>Description: {this.props.description}</p>
         <p>Factoid: {this.props.factoid}</p>
+        <button
+          onClick={() => this.props.handleDelete(this.props.id)}
+        >Delete</button>
       </div>
     );
   }
