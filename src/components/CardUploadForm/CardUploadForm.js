@@ -8,15 +8,11 @@ class CardUploadForm extends React.Component {
     image: '',
     description: '',
     factoid: '',
-    cards: []
   };
 
   submitCard = async e => {
     e.preventDefault();
-    const newCard = await cardService.submitNewCard(this.state);
-    this.setState({
-      cards: [...this.state.cards, newCard]
-    });
+    cardService.submitNewCard(this.state);
   }
 
   handleFileUpload = e => {
@@ -24,7 +20,7 @@ class CardUploadForm extends React.Component {
   }
 
   handleChange = e => {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   render() {
@@ -37,19 +33,19 @@ class CardUploadForm extends React.Component {
             type='file'
             onChange={this.handleFileUpload}
           />
-          <input 
+          <input
             placeholder='name'
             name='name'
             type='text'
             onChange={this.handleChange}
           />
-          <input 
+          <input
             placeholder='description'
             name='description'
             type='text'
             onChange={this.handleChange}
           />
-          <input 
+          <input
             placeholder='factoid'
             name='factoid'
             type='text'
@@ -59,15 +55,6 @@ class CardUploadForm extends React.Component {
             type='submit'
           >Submit</button>
         </form>
-        {this.state.cards.length > 0 &&
-        this.state.cards.map(card => (
-          <img 
-            src={card.image}
-            alt={card.name}
-            key={card.name}
-          />
-        ))
-        }
       </div>
     );
   }

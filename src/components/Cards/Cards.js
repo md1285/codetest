@@ -28,6 +28,13 @@ class Cards extends React.Component {
 
   handleDelete = async id => {
     const cards = await cardService.deleteCard(id);
+    let counter = this.state.counter;
+    let cardsLength = this.state.cards.length
+    if (counter === cardsLength - 1 && counter !== 0) {
+      this.setState({
+        counter: this.state.counter - 1
+      });
+    }
     this.setState({
       cards
     });
@@ -45,6 +52,8 @@ class Cards extends React.Component {
             factoid={this.state.cards[this.state.counter].factoid}
             id={this.state.cards[this.state.counter]._id}
             handleDelete={this.handleDelete}
+            currentNum={this.state.counter + 1}
+            totalCards={this.state.cards.length}
           />
           :
           <p>Loading...</p>

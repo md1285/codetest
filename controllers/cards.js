@@ -43,6 +43,7 @@ const newCard = (req, res) => {
           factoid: fields.factoid[0],
           image: uploadData.Location,
         };
+        Card.create(newCard);
         res.status(200).json(newCard);
       } catch (error) {
         res.status(400).json(error);
@@ -52,7 +53,8 @@ const newCard = (req, res) => {
 };
 
 const index = async (req, res) => {
-  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]);
+  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
+  console.log(allCards)
   res.status(200).json(allCards);
 };
 
