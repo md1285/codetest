@@ -11,6 +11,7 @@ class App extends React.Component {
   state = {
     cards: [],
     counter: 0,
+    message: ''
   };
 
   async componentDidMount() {
@@ -25,14 +26,15 @@ class App extends React.Component {
     if (newCounter < 0) newCounter = this.state.cards.length - 1;
     if (newCounter >= this.state.cards.length) newCounter = 0;
     this.setState({
-      counter: newCounter
+      counter: newCounter,
+      message: ''
     })
   }
 
   handleDelete = async id => {
     const cards = await cardService.deleteCard(id);
-    let counter = this.state.counter;
-    let cardsLength = this.state.cards.length
+    const counter = this.state.counter;
+    const cardsLength = this.state.cards.length;
     if (counter === cardsLength - 1 && counter !== 0) {
       this.setState({
         counter: this.state.counter - 1
@@ -45,9 +47,11 @@ class App extends React.Component {
 
   handleSubmitNewCard = async newCard => {
     const cards = await cardService.submitNewCard(newCard);
+    const newCardExists = this.state.cards.length !== cards.length;
     this.setState({
       cards,
-      counter: cards.length -1
+      counter: newCardExists ? cards.length - 1 : this.state.counter,
+      message: newCardExists ? '' : 'Error: This game already exists in the database.'
     });
   }
 
@@ -63,6 +67,9 @@ class App extends React.Component {
         <CardUploadForm 
           handleSubmitNewCard={this.handleSubmitNewCard}
         />
+        {this.state.message && 
+        <p>{this.state.message}</p>
+        }
       </div>
     );
   }

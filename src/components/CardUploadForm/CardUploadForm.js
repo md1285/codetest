@@ -32,28 +32,28 @@ class CardUploadForm extends React.Component {
         >
           <input
             type='file'
-            required='true'
+            required={true}
             onChange={this.handleFileUpload}
           />
           <input
             placeholder='name'
             name='name'
             type='text'
-            required='true'
+            required={true}
             onChange={this.handleChange}
           />
           <input
             placeholder='description'
             name='description'
             type='text'
-            required='true'
+            required={true}
             onChange={this.handleChange}
           />
           <input
             placeholder='factoid'
             name='factoid'
             type='text'
-            required='true'
+            required={true}
             onChange={this.handleChange}
           />
           <button

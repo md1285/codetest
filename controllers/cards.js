@@ -55,7 +55,7 @@ const newCard = (req, res) => {
           name: fields.name[0],
           description: fields.description[0],
           factoid: fields.factoid[0],
-          image
+          image,
         };
         const cardExists = await Card.exists({name: newCard.name})
         if (!cardExists) {
@@ -68,7 +68,6 @@ const newCard = (req, res) => {
     }
   );
 };
-
 
 module.exports = {
   index,
