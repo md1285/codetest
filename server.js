@@ -11,7 +11,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 
-app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'build', 'icon.png')));
 app.use(express.static(path.join(__dirname, 'build')));
 
 

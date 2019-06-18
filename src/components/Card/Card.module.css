@@ -8,6 +8,17 @@
   border: 3px dotted black;
 }
 
+.gameTitle {
+  font-size: 1.5em;
+  font-weight: 600;
+  text-align: center;
+}
+
 .p {
   margin: 10px 5px;
+}
+
+.image {
+  max-height: 150px;
+  max-width: 400px;
 }

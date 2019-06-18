@@ -13,8 +13,12 @@ class Card extends React.Component {
     return (
       <div className={`${styles.Card} resizeInner`}>
         <p>{this.props.currentNum}/{this.props.totalCards}</p>
-        <p>{this.props.name}</p>
-        <img src={this.props.image} alt={this.props.name} />
+        <p className={styles.gameTitle}>{this.props.name}</p>
+        <img 
+          src={this.props.image} 
+          alt={this.props.name} 
+          className={styles.image}
+          />
         <div>
           <p className={styles.p}>Description: {this.props.description}</p>
           <p className={styles.p}>Factoid: {this.props.factoid}</p>

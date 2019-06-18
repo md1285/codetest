@@ -2,6 +2,9 @@ import React from 'react';
 import Card from '../Card/Card';
 import styles from './Cards.module.css'
 
+import { Icon } from 'react-materialize';
+
+
 class Cards extends React.Component {
 
   render() {
@@ -30,11 +33,11 @@ class Cards extends React.Component {
             onClick={() => {
               this.props.handleClick(-1)
             }}
-          >&lt;--</button>
+          ><Icon>arrow_back</Icon></button>
           <button
             className='btn'
             onClick={() => this.props.handleClick(1)}
-          >--></button>
+          ><Icon>arrow_forward</Icon></button>
         </div>
       </div>
     );
