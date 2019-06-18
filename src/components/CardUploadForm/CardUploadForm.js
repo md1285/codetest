@@ -1,7 +1,7 @@
 import React from 'react';
-import cardService from '../../utils/cardService';
 
 class CardUploadForm extends React.Component {
+
   state = {
     file: null,
     name: '',
@@ -9,11 +9,6 @@ class CardUploadForm extends React.Component {
     description: '',
     factoid: '',
   };
-
-  submitCard = async e => {
-    e.preventDefault();
-    cardService.submitNewCard(this.state);
-  }
 
   handleFileUpload = e => {
     this.setState({ file: e.target.files });
@@ -23,32 +18,42 @@ class CardUploadForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.handleSubmitNewCard(this.state)
+    e.target.reset();
+  }
+
   render() {
     return (
       <div>
         <form
-          onSubmit={this.submitCard}
+          onSubmit={this.handleSubmit}
         >
           <input
             type='file'
+            required='true'
             onChange={this.handleFileUpload}
           />
           <input
             placeholder='name'
             name='name'
             type='text'
+            required='true'
             onChange={this.handleChange}
           />
           <input
             placeholder='description'
             name='description'
             type='text'
+            required='true'
             onChange={this.handleChange}
           />
           <input
             placeholder='factoid'
             name='factoid'
             type='text'
+            required='true'
             onChange={this.handleChange}
           />
           <button

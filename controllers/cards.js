@@ -5,6 +5,12 @@ const fileType = require('file-type');
 const multiparty = require('multiparty');
 const bluebird = require('bluebird');
 
+const index = async (req, res) => {
+  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
+  console.log(allCards)
+  res.status(200).json(allCards);
+};
+
 // helper function and setup for newCard
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -22,7 +28,6 @@ const uploadFile = (buffer, name, type) => {
   };
   return s3.upload(params).promise();
 };
-
 
 const newCard = (req, res) => {
   const form = new multiparty.Form();
@@ -43,19 +48,14 @@ const newCard = (req, res) => {
           factoid: fields.factoid[0],
           image: uploadData.Location,
         };
-        Card.create(newCard);
-        res.status(200).json(newCard);
+        await Card.create(newCard);
+        // res.status(200).json(newCard);
+        index(req, res);
       } catch (error) {
         res.status(400).json(error);
       }
     }
   );
-};
-
-const index = async (req, res) => {
-  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
-  console.log(allCards)
-  res.status(200).json(allCards);
 };
 
 const deleteCard = async (req, res) => {
