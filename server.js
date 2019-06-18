@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 
 // API routes
-app.use('/cards', require('./routes/api/cards'));
+app.use('/api/cards', require('./routes/api/cards'));
 
 // Catch-all API route
 app.get('/*', function (req, res) {

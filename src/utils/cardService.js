@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-const submitNewCard = state => {
-  const formData = new FormData();
-  if (state.file) formData.append('file', state.file[0]);
-  if (state.name) formData.append('name', state.name);
-  if (state.description) formData.append('description', state.description);
-  if (state.factoid) formData.append('factoid', state.factoid);
-  return axios.post('/cards', formData, {
+const submitNewCard = imageFile => {
+  const formInput = document.getElementById('submission-form')
+  const form = new FormData(formInput);
+  form.set('file', imageFile)
+  return axios.post('/api/cards', form, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -20,23 +18,23 @@ const submitNewCard = state => {
 };
 
 const getAllCards = () => {
-  return axios.get('/cards')
-  .then(res => {
-    return res.data;
-  })
-  .catch(err => {
-    console.log(`There was an error getting the cards: ${err}`)
-  });
+  return axios.get('/api/cards')
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      console.log(`There was an error getting the cards: ${err}`)
+    });
 };
 
 const deleteCard = id => {
-  return axios.delete(`/cards/${id}`)
-  .then(res => {
-    return res.data;
-  })
-  .catch(err => {
-    console.log(`There was an error deleting the card: ${err}`)
-  })
+  return axios.delete(`/api/cards/${id}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      console.log(`There was an error deleting the card: ${err}`)
+    })
 }
 
 export default {

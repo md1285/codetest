@@ -12,23 +12,24 @@ class CardUploadForm extends React.Component {
 
   handleFileUpload = e => {
     this.setState({ file: e.target.files });
-  }
+  };
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    this.props.handleSubmitNewCard(this.state)
-    e.target.reset();
-  }
+    await this.props.handleSubmitNewCard(this.state.file[0]);
+    this.props.history.push('/cards');
+  };
 
   render() {
     return (
       <div>
         <form
           onSubmit={this.handleSubmit}
+          id='submission-form'
         >
           <input
             type='file'

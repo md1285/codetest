@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
+import Navbar from '../Navbar/Navbar'
 import Cards from '../Cards/Cards';
 import CardUploadForm from '../CardUploadForm/CardUploadForm';
 
@@ -58,18 +60,40 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Cards
-          cards={this.state.cards}
-          counter={this.state.counter}
-          handleClick={this.handleClick}
-          handleDelete={this.handleDelete}
-        />
-        <CardUploadForm 
-          handleSubmitNewCard={this.handleSubmitNewCard}
-        />
-        {this.state.message && 
-        <p>{this.state.message}</p>
-        }
+        <Navbar />
+        <Switch>
+          <Route
+            exact path='/'
+            render={() => (
+              <Redirect to='/cards' />
+            )}
+          />
+          <Route
+            exact path='/cards/new'
+            render={props => (
+              <div>
+                <CardUploadForm
+                  history={props.history}
+                  handleSubmitNewCard={this.handleSubmitNewCard}
+                />
+                {this.state.message &&
+                  <p>{this.state.message}</p>
+                }
+              </div>
+            )}
+          />
+          <Route
+            exact path='/cards'
+            render={() => (
+              <Cards
+                cards={this.state.cards}
+                counter={this.state.counter}
+                handleClick={this.handleClick}
+                handleDelete={this.handleDelete}
+              />
+            )}
+          />
+        </Switch>
       </div>
     );
   }
