@@ -54,6 +54,7 @@ Consider adding some improvements to what you've made to really showcase your st
 * [ ] Write a test or two for your code.
 * [ ] Add a lint file and make sure your code is linted. 
 * [ ] Add CD/CI to your project to auto-deploy it
+* [ ] Enable session or token-based user authentication.
 * [ ] Edit this ReadMe with new suggestions for how to improve this code test
 
 ## Closing Thoughts
