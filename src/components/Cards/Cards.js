@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '../Card/Card';
 import styles from './Cards.module.css'
 
-import { Modal, Button, Icon } from 'react-materialize';
+import { Modal, Button } from 'react-materialize';
 
 const trigger = <Button className='orange'>Seed Database</Button>;
 
@@ -39,7 +39,7 @@ class Cards extends React.Component {
             onClick={() => {
               this.props.handleClick(-1)
             }}
-          ><Icon>arrow_back</Icon></button>
+          ><i class="medium material-icons">arrow_back</i></button>
           <Modal trigger={trigger}>
             <p>
               Re-seed the database with games from boardgamegeek.com? This will delete all user additions and cannot be undone.
@@ -53,7 +53,7 @@ class Cards extends React.Component {
           <button
             className='btn'
             onClick={() => this.props.handleClick(1)}
-          ><Icon>arrow_forward</Icon></button>
+          ><i class="medium material-icons">arrow_forward</i></button>
         </div>
       </div>
     );
