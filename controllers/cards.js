@@ -8,13 +8,21 @@ const axios = require('axios');
 const parseString = require('xml2js').parseString;
 
 const index = async (req, res) => {
-  const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
-  res.status(200).json(allCards);
+  try {
+    const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
+    res.status(200).json(allCards);
+  } catch (err) {
+    res.status(404).json(err)
+  }
 };
 
 const deleteCard = async (req, res) => {
-  await Card.findByIdAndDelete(req.params.id);
-  index(req, res);
+  try {
+    await Card.findByIdAndDelete(req.params.id);
+    index(req, res);
+  } catch (err) {
+    res.status(404).json(err)
+  }
 };
 
 // config for uploadFile
@@ -76,22 +84,26 @@ const newCard = (req, res) => {
 
 const reSeed = async (req, res) => {
   const seedData = [];
-  const apiResult = await axios.get('https://www.boardgamegeek.com/xmlapi2/hot?type=boardgame');
-  parseString(apiResult.data, (err, result) => {
-    result.items.item.length = 15;
-    result.items.item.forEach(item => {
-      seedData.push({
-        name: item.name[0]['$'].value,
-        image: item.thumbnail[0]['$'].value,
-        description: `An original board game first published in ${item.yearpublished[0]['$'].value}.`,
-        factoid: `Currently ranked number ${item['$'].rank} on Board Game Geek's list of hottest board games.`,
-        rank: parseInt(item['$'].rank)
+  try {
+    const apiResult = await axios.get('https://www.boardgamegeek.com/xmlapi2/hot?type=boardgame');
+    parseString(apiResult.data, (err, result) => {
+      result.items.item.length = 15;
+      result.items.item.forEach(item => {
+        seedData.push({
+          name: item.name[0]['$'].value,
+          image: item.thumbnail[0]['$'].value,
+          description: `An original board game first published in ${item.yearpublished[0]['$'].value}.`,
+          factoid: `Currently ranked number ${item['$'].rank} on Board Game Geek's list of hottest board games.`,
+          rank: parseInt(item['$'].rank)
+        });
       });
     });
-  });
-  await Card.deleteMany({});
-  await Card.create(seedData);
-  index(req, res);
+    await Card.deleteMany({});
+    await Card.create(seedData);
+    index(req, res);
+  } catch (err) {
+    res.status(404).json(err)
+  }
 };
 
 module.exports = {

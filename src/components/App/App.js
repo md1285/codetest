@@ -34,7 +34,7 @@ class App extends React.Component {
   }
 
   handleDelete = async id => {
-    const cards = await cardService.deleteCard(id);
+    const cards = await cardService.deleteCard(id, this.updateErrorMessage);
     const counter = this.state.counter;
     const cardsLength = this.state.cards.length;
     if (counter === cardsLength - 1 && counter !== 0) {
@@ -42,9 +42,11 @@ class App extends React.Component {
         counter: this.state.counter - 1
       });
     }
-    this.setState({
-      cards,
-    });
+    if (cards) {
+      this.setState({
+        cards,
+      });
+    }
   }
 
   handleSubmitNewCard = async newCard => {

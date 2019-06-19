@@ -23,6 +23,7 @@ class Cards extends React.Component {
             description={this.props.cards[this.props.counter].description}
             factoid={this.props.cards[this.props.counter].factoid}
             id={this.props.cards[this.props.counter]._id}
+            errorMessage={this.props.errorMessage}
 
             currentNum={this.props.counter + 1}
             totalCards={this.props.cards.length}

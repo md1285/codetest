@@ -34,6 +34,7 @@ class Card extends React.Component {
             className='red'
           >Yes, Delete</Button>
         </Modal>
+        <p>{this.props.errorMessage}</p>
 
       </div>
     );
