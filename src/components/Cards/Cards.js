@@ -39,7 +39,7 @@ class Cards extends React.Component {
             onClick={() => {
               this.props.handleClick(-1)
             }}
-          ><i class="medium material-icons">arrow_back</i></button>
+          >&lt;--</button>
           <Modal trigger={trigger}>
             <p>
               Re-seed the database with games from boardgamegeek.com? This will delete all user additions and cannot be undone.
@@ -53,7 +53,7 @@ class Cards extends React.Component {
           <button
             className='btn'
             onClick={() => this.props.handleClick(1)}
-          ><i class="medium material-icons">arrow_forward</i></button>
+          >--></button>
         </div>
       </div>
     );
