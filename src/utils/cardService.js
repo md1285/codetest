@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const submitNewCard = imageFile => {
+const submitNewCard = (imageFile, updateErrorMessage) => {
   const formInput = document.getElementById('submission-form')
   const form = new FormData(formInput);
   form.set('file', imageFile)
@@ -13,17 +13,18 @@ const submitNewCard = imageFile => {
       if (res.statusText === 'OK') return res.data;
     })
     .catch(err => {
-      console.log(`There was an error submitting the card: ${err}`)
+      updateErrorMessage(`${err}. This game may already exist in the database.`);
     });
 };
 
-const getAllCards = () => {
+const getAllCards = (updateErrorMessage) => {
   return axios.get('/api/cards')
     .then(res => {
       return res.data;
     })
     .catch(err => {
-      console.log(`There was an error getting the cards: ${err}`)
+      updateErrorMessage(`There was an error getting the cards. ${err}`)
+      return [];
     });
 };
 

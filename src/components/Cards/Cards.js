@@ -8,6 +8,10 @@ const trigger = <Button className='orange'>Seed Database</Button>;
 
 class Cards extends React.Component {
 
+  componentDidMount() {
+    this.props.updateErrorMessage('');
+  }
+
   render() {
     return (
       <div className={`${styles.Cards} largeScreenResize`}>
@@ -26,7 +30,7 @@ class Cards extends React.Component {
             handleDelete={this.props.handleDelete}
           />
           :
-          <p>Loading...</p>
+          <p>{this.props.errorMessage || 'Loading...'}</p>
         }
         <div className={styles.cardNavButtonsWrapper}>
           <button
@@ -35,26 +39,20 @@ class Cards extends React.Component {
               this.props.handleClick(-1)
             }}
           ><Icon>arrow_back</Icon></button>
-
-
           <Modal trigger={trigger}>
             <p>
               Re-seed the database with games from boardgamegeek.com? This will delete all user additions and cannot be undone.
           </p>
             <Button
-              className='btn red'
+              className='btn orange'
               onClick={this.props.handleSeedDatabase}
               modal='close'
             >Confirm</Button>
           </Modal>
-
-
           <button
             className='btn'
             onClick={() => this.props.handleClick(1)}
           ><Icon>arrow_forward</Icon></button>
-
-
         </div>
       </div>
     );

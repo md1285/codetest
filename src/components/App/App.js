@@ -17,7 +17,7 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    const cards = await cardService.getAllCards();
+    const cards = await cardService.getAllCards(this.updateErrorMessage);
     this.setState({
       cards
     });
@@ -48,13 +48,14 @@ class App extends React.Component {
   }
 
   handleSubmitNewCard = async newCard => {
-    const cards = await cardService.submitNewCard(newCard);
-    const newCardExists = this.state.cards.length !== cards.length;
-    this.setState({
-      cards,
-      counter: newCardExists ? cards.length - 1 : this.state.counter,
-      message: newCardExists ? '' : 'Error: This game already exists in the database.'
-    });
+    const cards = await cardService.submitNewCard(newCard, this.updateErrorMessage);
+    if (!this.state.message) {
+      this.setState({
+        cards,
+        counter: cards.length - 1,
+        message: ''
+      });
+    }
   }
 
   handleSeedDatabase = async () => {
@@ -65,10 +66,10 @@ class App extends React.Component {
     });
   };
 
-  clearErrorMessage = () => {
+  updateErrorMessage = message => {
     this.setState({
-      message: ''
-    })
+      message
+    });
   };
 
   render() {
@@ -79,19 +80,19 @@ class App extends React.Component {
           <Route
             exact path='/'
             render={() => (
-              <Redirect to='/cards'/>
+              <Redirect to='/cards' />
             )}
           />
           <Route
             exact path='/cards/new'
             render={props => (
-                <CardUploadForm
-                  history={props.history}
-                  errorMessage={this.state.message}
-                  
-                  handleSubmitNewCard={this.handleSubmitNewCard}
-                  clearErrorMessage={this.clearErrorMessage}
-                />
+              <CardUploadForm
+                history={props.history}
+                errorMessage={this.state.message}
+
+                handleSubmitNewCard={this.handleSubmitNewCard}
+                updateErrorMessage={this.updateErrorMessage}
+              />
             )}
           />
           <Route
@@ -100,10 +101,12 @@ class App extends React.Component {
               <Cards
                 cards={this.state.cards}
                 counter={this.state.counter}
+                errorMessage={this.state.message}
 
                 handleClick={this.handleClick}
                 handleDelete={this.handleDelete}
                 handleSeedDatabase={this.handleSeedDatabase}
+                updateErrorMessage={this.updateErrorMessage}
               />
             )}
           />

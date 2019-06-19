@@ -60,11 +60,13 @@ const newCard = (req, res) => {
         factoid: fields.factoid[0],
         image,
       };
-      const cardExists = await Card.exists({ name: newCard.name })
-      if (!cardExists) {
+      const cardExistsInDb = await Card.exists({ name: newCard.name })
+      if (!cardExistsInDb) {
         await Card.create(newCard);
+        index(req, res);
+      } else {
+        throw new Error('game exists in db')
       }
-      index(req, res);
     } catch (error) {
       res.status(400).json(error);
     }

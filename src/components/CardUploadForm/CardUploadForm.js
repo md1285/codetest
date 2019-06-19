@@ -12,7 +12,7 @@ class CardUploadForm extends React.Component {
   };
 
   componentDidMount() {
-    this.props.clearErrorMessage();
+    this.props.updateErrorMessage('');
   }
 
   handleFileUpload = e => {
