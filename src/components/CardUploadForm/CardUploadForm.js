@@ -11,6 +11,10 @@ class CardUploadForm extends React.Component {
     factoid: '',
   };
 
+  componentDidMount() {
+    this.props.clearErrorMessage();
+  }
+
   handleFileUpload = e => {
     this.setState({ file: e.target.files });
   };
@@ -22,7 +26,9 @@ class CardUploadForm extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     await this.props.handleSubmitNewCard(this.state.file[0]);
-    this.props.history.push('/cards');
+    if (!this.props.errorMessage) {
+      this.props.history.push('/cards');
+    }
   };
 
   render() {
@@ -73,7 +79,9 @@ class CardUploadForm extends React.Component {
               type='submit'
             >Submit</button>
         </form>
-      <p>{this.props.errorMessage}</p>
+      <p
+        className={styles.errorMessage}
+      >{this.props.errorMessage}</p>
       </div>
         );
       }

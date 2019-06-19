@@ -65,6 +65,12 @@ class App extends React.Component {
     });
   };
 
+  clearErrorMessage = () => {
+    this.setState({
+      message: ''
+    })
+  };
+
   render() {
     return (
       <div className={styles.App}>
@@ -81,8 +87,10 @@ class App extends React.Component {
             render={props => (
                 <CardUploadForm
                   history={props.history}
-                  handleSubmitNewCard={this.handleSubmitNewCard}
                   errorMessage={this.state.message}
+                  
+                  handleSubmitNewCard={this.handleSubmitNewCard}
+                  clearErrorMessage={this.clearErrorMessage}
                 />
             )}
           />

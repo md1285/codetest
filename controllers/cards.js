@@ -17,7 +17,7 @@ const deleteCard = async (req, res) => {
   index(req, res);
 };
 
-// helper function and setup for getImageUrl
+// config for uploadFile
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -25,6 +25,7 @@ AWS.config.update({
 AWS.config.setPromisesDependency(bluebird);
 const s3 = new AWS.S3();
 
+// helper function for getImageUrl
 const uploadFile = (buffer, name, type) => {
   const params = {
     ACL: 'public-read',
