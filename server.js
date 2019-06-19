@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api/cards', require('./routes/api/cards'));
 
 // Catch-all API route
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', index.html));
+app.get('*', function(req, res){
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 const port = process.env.PORT || 3001;
