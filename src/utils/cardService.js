@@ -37,8 +37,19 @@ const deleteCard = id => {
     })
 }
 
+const seedDatabase = () => {
+  return axios.delete('/api/cards')
+  .then(res => {
+    return res.data;
+  })
+  .catch(err => {
+    console.log(`There was an error getting the cards: ${err}`)
+  });
+};
+
 export default {
   submitNewCard,
   getAllCards,
-  deleteCard
+  deleteCard,
+  seedDatabase
 };

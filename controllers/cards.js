@@ -4,6 +4,8 @@ const fs = require('fs');
 const fileType = require('file-type');
 const multiparty = require('multiparty');
 const bluebird = require('bluebird');
+const axios = require('axios');
+const parseString = require('xml2js').parseString;
 
 const index = async (req, res) => {
   const allCards = await Card.find({}).sort([['updatedAt', 1], ['rank', 1]]).select('-__v');
@@ -48,29 +50,50 @@ const getImageUrl = async files => {
 const newCard = (req, res) => {
   const form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
-      if (error) throw new Error(error);
-      try {
-        const image = await getImageUrl(files);
-        const newCard = {
-          name: fields.name[0],
-          description: fields.description[0],
-          factoid: fields.factoid[0],
-          image,
-        };
-        const cardExists = await Card.exists({name: newCard.name})
-        if (!cardExists) {
-          await Card.create(newCard);
-        }
-        index(req, res);
-      } catch (error) {
-        res.status(400).json(error);
+    if (error) throw new Error(error);
+    try {
+      const image = await getImageUrl(files);
+      const newCard = {
+        name: fields.name[0],
+        description: fields.description[0],
+        factoid: fields.factoid[0],
+        image,
+      };
+      const cardExists = await Card.exists({ name: newCard.name })
+      if (!cardExists) {
+        await Card.create(newCard);
       }
+      index(req, res);
+    } catch (error) {
+      res.status(400).json(error);
     }
+  }
   );
+};
+
+const reSeed = async (req, res) => {
+  const seedData = [];
+  const apiResult = await axios.get('https://www.boardgamegeek.com/xmlapi2/hot?type=boardgame');
+  parseString(apiResult.data, (err, result) => {
+    result.items.item.length = 15;
+    result.items.item.forEach(item => {
+      seedData.push({
+        name: item.name[0]['$'].value,
+        image: item.thumbnail[0]['$'].value,
+        description: `An original board game first published in ${item.yearpublished[0]['$'].value}.`,
+        factoid: `Currently ranked number ${item['$'].rank} on Board Game Geek's list of hottest board games.`,
+        rank: parseInt(item['$'].rank)
+      });
+    });
+  });
+  await Card.deleteMany({});
+  await Card.create(seedData);
+  index(req, res);
 };
 
 module.exports = {
   index,
   delete: deleteCard,
-  new: newCard
+  new: newCard,
+  reSeed
 };

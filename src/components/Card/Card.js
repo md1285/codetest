@@ -3,9 +3,7 @@ import styles from './Card.module.css'
 
 import { Modal, Button } from 'react-materialize';
 
-const trigger = <Button
-  className='red'
->Delete</Button>;
+const trigger = <Button className='red'>Delete</Button>;
 
 class Card extends React.Component {
 

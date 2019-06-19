@@ -57,6 +57,14 @@ class App extends React.Component {
     });
   }
 
+  handleSeedDatabase = async () => {
+    const cards = await cardService.seedDatabase();
+    this.setState({
+      cards,
+      counter: 0
+    });
+  };
+
   render() {
     return (
       <div className={styles.App}>
@@ -84,8 +92,10 @@ class App extends React.Component {
               <Cards
                 cards={this.state.cards}
                 counter={this.state.counter}
+
                 handleClick={this.handleClick}
                 handleDelete={this.handleDelete}
+                handleSeedDatabase={this.handleSeedDatabase}
               />
             )}
           />
