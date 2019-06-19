@@ -38,13 +38,13 @@ const deleteCard = (id, updateErrorMessage) => {
     })
 }
 
-const seedDatabase = () => {
+const seedDatabase = updateErrorMessage => {
   return axios.delete('/api/cards')
   .then(res => {
     return res.data;
   })
   .catch(err => {
-    console.log(`There was an error getting the cards. ${err}`)
+    updateErrorMessage(`There was an seeding the database. ${err}`)
   });
 };
 

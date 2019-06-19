@@ -51,7 +51,9 @@ class App extends React.Component {
 
   handleSubmitNewCard = async newCard => {
     const cards = await cardService.submitNewCard(newCard, this.updateErrorMessage);
+    console.log(cards)
     if (!this.state.message) {
+      console.log('got here')
       this.setState({
         cards,
         counter: cards.length - 1,
@@ -61,11 +63,13 @@ class App extends React.Component {
   }
 
   handleSeedDatabase = async () => {
-    const cards = await cardService.seedDatabase();
-    this.setState({
-      cards,
-      counter: 0
-    });
+    const cards = await cardService.seedDatabase(this.updateErrorMessage);
+    if (cards) {
+      this.setState({
+        cards,
+        counter: 0
+      });
+    }
   };
 
   updateErrorMessage = message => {
